@@ -1,0 +1,208 @@
+# Copyright 2026 Simone Esposito
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Android Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Release version without the v prefix
+        required: true
+        default: 0.0.1
+        type: string
+      prerelease:
+        description: Mark this GitHub release as a prerelease
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build signed APK and AAB and publish release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: ''
+
+      - name: Install Android 17 SDK
+        run: sdkmanager --install --channel=3 "platforms;android-37.0" "build-tools;37.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Validate release request
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "Run Android Release from the main branch."
+            exit 1
+          fi
+
+          version_regex='^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'
+          if [[ ! "$RELEASE_VERSION" =~ $version_regex ]]; then
+            echo "Use a version such as 0.0.1 or 0.0.1-rc.1, without a leading v."
+            exit 1
+          fi
+
+          tag="v${RELEASE_VERSION}"
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "Tag ${tag} already exists. Choose a new version."
+            exit 1
+          fi
+
+      - name: Prepare signing key
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          if [[ -z "$ANDROID_KEYSTORE_BASE64" ]]; then
+            echo "Configure the Android signing secrets in the repository's Actions secrets."
+            exit 1
+          fi
+
+          keystore_path="$RUNNER_TEMP/iphotos-release.jks"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$keystore_path"
+          test -s "$keystore_path"
+          echo "ANDROID_KEYSTORE_PATH=$keystore_path" >> "$GITHUB_ENV"
+
+      - name: Run tests and build signed release APK and AAB
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ -z "$ANDROID_KEYSTORE_PASSWORD" || -z "$ANDROID_KEY_ALIAS" || -z "$ANDROID_KEY_PASSWORD" ]]; then
+            echo "One or more Android signing secrets are missing from the repository's Actions secrets."
+            exit 1
+          fi
+
+          ./gradlew --no-daemon :app:testProdDebugUnitTest :app:assembleProdRelease :app:bundleProdRelease \
+            -PappVersionName="$RELEASE_VERSION" \
+            -PappVersionCode="$GITHUB_RUN_NUMBER"
+
+      - name: Prepare release files
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/iphotos-release"
+          cp app/build/outputs/apk/prod/release/app-prod-release.apk \
+            "$RUNNER_TEMP/iphotos-release/iPhotos-${RELEASE_VERSION}.apk"
+          cp app/build/outputs/bundle/prodRelease/app-prod-release.aab \
+            "$RUNNER_TEMP/iphotos-release/iPhotos-${RELEASE_VERSION}.aab"
+          cd "$RUNNER_TEMP/iphotos-release"
+          sha256sum "iPhotos-${RELEASE_VERSION}.apk" "iPhotos-${RELEASE_VERSION}.aab" > SHA256SUMS.txt
+          apk_sha256=$(sha256sum "iPhotos-${RELEASE_VERSION}.apk" | cut -d' ' -f1)
+          aab_sha256=$(sha256sum "iPhotos-${RELEASE_VERSION}.aab" | cut -d' ' -f1)
+          echo "APK_SHA256=$apk_sha256" >> "$GITHUB_ENV"
+          echo "AAB_SHA256=$aab_sha256" >> "$GITHUB_ENV"
+
+      - name: Generate changelog from commits since previous version tag
+        run: |
+          previous_tag=$(git describe --tags --abbrev=0 --match 'v[0-9]*' "$GITHUB_SHA" 2>/dev/null || true)
+          if [[ -n "$previous_tag" ]]; then
+            history_range="${previous_tag}..${GITHUB_SHA}"
+            range_description="Changes since \`${previous_tag}\`:"
+          else
+            history_range="$GITHUB_SHA"
+            range_description="Changes included in the initial release:"
+          fi
+
+          git log --no-merges --format='- %s (`%h`)' "$history_range" \
+            > "$RUNNER_TEMP/iphotos-commit-history.md"
+          {
+            printf '%s\n\n' "$range_description"
+            if [[ -s "$RUNNER_TEMP/iphotos-commit-history.md" ]]; then
+              cat "$RUNNER_TEMP/iphotos-commit-history.md"
+            else
+              printf '%s\n' '_No commits were found in this range._'
+            fi
+          } > "$RUNNER_TEMP/iphotos-changelog.md"
+
+      - name: Render release description from template
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+
+          workspace = Path(os.environ["GITHUB_WORKSPACE"])
+          run_temp = Path(os.environ["RUNNER_TEMP"])
+          template = (workspace / ".github/release_template.md").read_text()
+          changelog = (run_temp / "iphotos-changelog.md").read_text().strip()
+          if not changelog:
+              changelog = "_No changelog entries were generated for this release._"
+
+          replacements = {
+              "{{VERSION}}": os.environ["RELEASE_VERSION"],
+              "{{CHANGELOG}}": changelog,
+              "{{APK_SHA256}}": os.environ["APK_SHA256"],
+              "{{AAB_SHA256}}": os.environ["AAB_SHA256"],
+          }
+          description = template
+          for placeholder, value in replacements.items():
+              description = description.replace(placeholder, value)
+          if "{{" in description:
+              raise SystemExit("Release template contains an unresolved placeholder.")
+
+          (run_temp / "iphotos-release-notes.md").write_text(description)
+          PY
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          RELEASE_PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          tag="v${RELEASE_VERSION}"
+          release_args=(--target "$GITHUB_SHA" --title "iPhotos ${tag}")
+          if [[ "$RELEASE_PRERELEASE" == "true" ]]; then
+            release_args+=(--prerelease)
+          fi
+
+          gh release create "$tag" \
+            "$RUNNER_TEMP/iphotos-release/iPhotos-${RELEASE_VERSION}.apk" \
+            "$RUNNER_TEMP/iphotos-release/iPhotos-${RELEASE_VERSION}.aab" \
+            "$RUNNER_TEMP/iphotos-release/SHA256SUMS.txt" \
+            --notes-file "$RUNNER_TEMP/iphotos-release-notes.md" \
+            "${release_args[@]}"
+
+      - name: Remove signing key from runner
+        if: always()
+        run: rm -f "$RUNNER_TEMP/iphotos-release.jks"

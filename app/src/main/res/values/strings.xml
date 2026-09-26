@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name" translatable="false">iPhotos</string>
+    <string name="brand_iphotos" translatable="false">iPhotos</string>
+    <string name="brand_iaccount" translatable="false">iAccount</string>
+    <string name="brand_apple" translatable="false">Apple</string>
+    <string name="brand_idevice" translatable="false">iDevice</string>
+    <string name="brand_android" translatable="false">Android</string>
+    <string name="live_photos_name" translatable="false">Live Photos</string>
+    <string name="live_badge" translatable="false">LIVE</string>
+
+    <string name="private_album_unlock_title">Unlock private album</string>
+    <string name="private_album_unlock_subtitle">Authenticate with biometrics or your device screen lock</string>
+    <string name="private_album_locked">Private album remains locked.</string>
+    <string name="private_album_setup_lock">Set up a screen lock or biometric in %1$s Settings to open this private album.</string>
+    <string name="private_album_auth_required">Authenticate on this device before opening this private album.</string>
+    <string name="private_album_auth_unavailable">Private album authentication is unavailable on this screen.</string>
+    <string name="private_album_locked_description">Locked private album</string>
+
+    <string name="startup_checking_session">Checking your %1$s session</string>
+    <string name="onboarding_welcome">Welcome to %1$s</string>
+    <string name="onboarding_title">Your %1$s library,\non %2$s.</string>
+    <string name="onboarding_subtitle">Browse your photos, albums, %1$s and videos in one familiar gallery.</string>
+    <string name="onboarding_photos_title">Photos stay in %1$s</string>
+    <string name="onboarding_photos_body">%1$s connects to your %2$s Photos library.</string>
+    <string name="onboarding_password_title">Your password isn’t saved</string>
+    <string name="onboarding_password_body">Sign in directly with %1$s. Verification may be required.</string>
+    <string name="continue_label">Continue</string>
+
+    <string name="signin_title">Connect your %1$s</string>
+    <string name="signin_subtitle">Sign in to open your %1$s library.</string>
+    <string name="password">Password</string>
+    <string name="connecting_to_apple">Connecting to %1$s…</string>
+    <string name="sign_in">Sign in</string>
+    <string name="apple_signin_wait">Secure sign-in with %1$s can take a few moments.</string>
+    <string name="password_privacy">Your password is used to sign in to %1$s and is not saved by %2$s. %1$s may ask for a verification code.</string>
+    <string name="verify_its_you">Verify it’s you</string>
+    <string name="verification_code_subtitle">Enter the verification code %1$s sent to one of your trusted devices.</string>
+    <string name="verification_code">Verification code</string>
+    <string name="checking_code">Checking code…</string>
+    <string name="connecting_to_photos">Connecting to Photos…</string>
+    <string name="verify_code">Verify code</string>
+    <string name="get_code_by_sms">Or get a code by text message</string>
+    <string name="trusted_phone">Trusted phone</string>
+    <string name="cancel_sign_in">Cancel sign-in</string>
+    <string name="allow_photos_access">Allow Photos access</string>
+    <string name="photos_access_attention">Photos access needs attention</string>
+    <string name="approval_subtitle">Approve the request on your trusted %1$s. Keep %2$s open until your library is ready.</string>
+    <string name="waiting_for_confirmation">Waiting for confirmation</string>
+    <string name="retry_photos_access">Try Photos access again</string>
+    <string name="recovery_key_safety">%1$s never asks you to turn off account protection or share a recovery key.</string>
+
+    <string name="dismiss">Dismiss</string>
+    <string name="tab_photos">Photos</string>
+    <string name="tab_collections">Collections</string>
+    <string name="tab_downloads">Downloads</string>
+    <string name="tab_more">More</string>
+    <string name="back_to_collections">Back to Collections</string>
+    <string name="back_to_more">Back to More</string>
+    <string name="your_iphotos_library">Your %1$s library</string>
+    <plurals name="item_count">
+        <item quantity="one">%1$s item</item>
+        <item quantity="other">%1$s items</item>
+    </plurals>
+    <string name="library_empty_title">Your library is empty</string>
+    <string name="library_empty_body">Photos from your %1$s library will appear here.</string>
+    <string name="photos_could_not_load">Photos couldn’t load</string>
+    <string name="try_again">Try again</string>
+    <string name="photo_grid_description">Photo grid. Pinch in to show more photos, or spread to make them larger.</string>
+
+    <string name="loading_more_photos">Loading more photos</string>
+    <string name="retry_downloads">Retry downloads</string>
+    <string name="unknown_date">Unknown date</string>
+    <string name="retry_loading_photo">Retry loading %1$s</string>
+    <string name="photo_tile_description">%1$s, %2$s</string>
+    <string name="favorite">Favorite</string>
+    <string name="video">Video</string>
+    <string name="no_collections">No collections yet</string>
+    <string name="collections_empty_body">Albums from your %1$s library will appear here.</string>
+    <string name="quick_access">Quick access</string>
+    <string name="albums">Albums</string>
+    <string name="recently_deleted">Recently Deleted</string>
+    <string name="favorites">Favorites</string>
+    <string name="hidden">Hidden</string>
+    <string name="all_photos">All Photos</string>
+    <string name="locked_private_collection">Locked private collection</string>
+    <string name="latest_photo_in_album">Latest photo in %1$s</string>
+    <string name="nothing_downloaded">Nothing downloaded yet</string>
+    <string name="downloads_empty_body">Items you save from your %1$s library will appear here.</string>
+    <string name="download_waiting">Waiting to download</string>
+    <string name="downloading_media">Downloading media</string>
+    <string name="sign_in_to_resume">Sign in to resume download</string>
+    <string name="download_failed">Download failed</string>
+
+    <string name="settings_library">Library</string>
+    <string name="automatic_sync">Automatic sync</string>
+    <string name="automatic_sync_detail">Refreshes photo and album details about every 12 hours on Wi‑Fi</string>
+    <string name="privacy_summary">%1$s doesn’t track your activity. Your password is sent directly to %2$s and isn’t saved by %1$s. Your encrypted sign-in session stays on this device, and photos load directly from %2$s.</string>
+    <string name="sign_out">Sign out</string>
+    <plurals name="media_item_count">
+        <item quantity="one">1 media item</item>
+        <item quantity="other">%1$d media items</item>
+    </plurals>
+
+    <string name="close_photo">Close photo</string>
+    <string name="video_could_not_load">Video couldn’t load</string>
+    <string name="preview_unavailable">Preview unavailable</string>
+    <string name="live_playback_retry">Couldn’t play · touch and hold to retry</string>
+    <string name="live_playback_replay">Touch and hold to replay</string>
+    <string name="media_information">Media information</string>
+    <string name="file_name">File name</string>
+    <string name="date_and_time">Date and time</string>
+    <string name="media">Media</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="dimensions_pixels">%1$s × %2$s pixels</string>
+    <string name="file_size">File size</string>
+    <string name="duration">Duration</string>
+    <string name="orientation">Orientation</string>
+    <string name="favorite_yes">Yes</string>
+    <string name="favorite_no">No</string>
+    <string name="hide_details">Hide details</string>
+    <string name="details">Details</string>
+    <string name="share_photo">Share photo</string>
+    <string name="share">Share</string>
+    <string name="saving">Saving</string>
+    <string name="save">Save</string>
+    <string name="pause_video">Pause video</string>
+    <string name="play_video">Play video</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="size_kib_bytes">%1$s KiB · %2$s bytes</string>
+    <string name="size_mib_bytes">%1$s MiB · %2$s bytes</string>
+    <string name="media_photo">Photo</string>
+    <string name="media_video">Video</string>
+    <string name="media_raw_photo">RAW photo</string>
+    <string name="media_live_photo">%1$s</string>
+    <string name="format_with_type">%1$s · %2$s</string>
+    <string name="orientation_normal">Normal</string>
+    <string name="orientation_mirrored_horizontal">Mirrored horizontally</string>
+    <string name="orientation_rotated_180">Rotated 180°</string>
+    <string name="orientation_mirrored_vertical">Mirrored vertically</string>
+    <string name="orientation_transposed">Transposed</string>
+    <string name="orientation_rotated_90">Rotated 90° clockwise</string>
+    <string name="orientation_transverse">Transverse</string>
+    <string name="orientation_rotated_270">Rotated 270° clockwise</string>
+    <string name="orientation_code">Code %1$d</string>
+    <string name="orientation_with_code">%1$s (%2$d)</string>
+
+    <plurals name="downloads_queued_to_retry">
+        <item quantity="one">%1$d download queued to retry.</item>
+        <item quantity="other">%1$d downloads queued to retry.</item>
+    </plurals>
+    <string name="no_failed_downloads">No failed downloads to retry.</string>
+    <string name="private_authenticate_before_open">Authenticate on this device before opening this private album.</string>
+    <string name="library_up_to_date">Library is up to date.</string>
+    <string name="sync_failed">Sync failed. Try again.</string>
+    <string name="albums_could_not_load">Albums could not be loaded.</string>
+    <string name="video_preview_could_not_load">Video preview could not be loaded.</string>
+    <string name="original_share_could_not_prepare">The original could not be prepared for sharing.</string>
+    <string name="download_could_not_queue">Download could not be queued.</string>
+    <string name="media_queued">Media queued. It will appear in Downloads when saved.</string>
+    <string name="media_already_queued">This media is already downloaded or queued.</string>
+    <string name="automatic_sync_enabled_notice">Automatic library sync is enabled.</string>
+    <string name="automatic_sync_paused_notice">Automatic library sync is paused.</string>
+    <string name="page_no_new_photos">%1$s returned no new photos for this page. Try again to continue.</string>
+    <string name="library_could_not_load">Your %1$s library could not be loaded.</string>
+    <string name="apple_rate_limited">%1$s is temporarily limiting photo requests. Wait a moment, then try again.</string>
+    <string name="previews_temporarily_unavailable">Some photo previews are temporarily unavailable. Try again in a moment.</string>
+    <string name="apple_links_could_not_refresh">%1$s photo links could not be refreshed. Try again in a moment.</string>
+    <string name="photo_could_not_load_from_apple">Could not load this photo from %1$s.</string>
+    <string name="original_could_not_download">Could not download the original from %1$s.</string>
+    <string name="unknown_photo_title">%1$s photo</string>
+    <string name="session_expired">Your %1$s session expired. Sign in again and complete two-factor authentication.</string>
+    <string name="authentication_failed">%1$s sign-in failed. Try again.</string>
+    <string name="code_required">%1$s requires a verification code. Enter the trusted-device code or try SMS.</string>
+    <string name="sms_sent">%1$s sent a verification code to %2$s.</string>
+    <string name="sms_send_failed">%1$s could not send an SMS code.</string>
+    <string name="code_verification_failed">%1$s could not verify that code. Try again.</string>
+    <string name="photos_authorization_failed">%1$s Photos authorization failed. Try again.</string>
+</resources>

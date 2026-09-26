@@ -1,0 +1,390 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "e86b6c1accaa217dac2ff51ea79ba1cc",
+    "entities": [
+      {
+        "tableName": "cloud_assets",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`assetId` TEXT NOT NULL, `title` TEXT NOT NULL, `capturedAtMillis` INTEGER NOT NULL, `mediaKind` TEXT NOT NULL, `sizeBytes` INTEGER NOT NULL, `width` INTEGER NOT NULL, `height` INTEGER NOT NULL, `albumId` TEXT, `isFavorite` INTEGER NOT NULL, `artworkStyle` TEXT NOT NULL, `resourceKey` TEXT NOT NULL, `liveMotionResourceKey` TEXT, `libraryId` TEXT NOT NULL, `locationLatitude` REAL, `locationLongitude` REAL, `orientation` INTEGER, `durationMillis` INTEGER, `isDownloaded` INTEGER NOT NULL, `isDeleted` INTEGER NOT NULL, PRIMARY KEY(`assetId`))",
+        "fields": [
+          {
+            "fieldPath": "assetId",
+            "columnName": "assetId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "capturedAtMillis",
+            "columnName": "capturedAtMillis",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaKind",
+            "columnName": "mediaKind",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sizeBytes",
+            "columnName": "sizeBytes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "width",
+            "columnName": "width",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "height",
+            "columnName": "height",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "albumId",
+            "columnName": "albumId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "isFavorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "artworkStyle",
+            "columnName": "artworkStyle",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resourceKey",
+            "columnName": "resourceKey",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "liveMotionResourceKey",
+            "columnName": "liveMotionResourceKey",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "libraryId",
+            "columnName": "libraryId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "locationLatitude",
+            "columnName": "locationLatitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "locationLongitude",
+            "columnName": "locationLongitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "orientation",
+            "columnName": "orientation",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "durationMillis",
+            "columnName": "durationMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isDownloaded",
+            "columnName": "isDownloaded",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isDeleted",
+            "columnName": "isDeleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "assetId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_cloud_assets_capturedAtMillis",
+            "unique": false,
+            "columnNames": [
+              "capturedAtMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cloud_assets_capturedAtMillis` ON `${TABLE_NAME}` (`capturedAtMillis`)"
+          },
+          {
+            "name": "index_cloud_assets_albumId",
+            "unique": false,
+            "columnNames": [
+              "albumId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cloud_assets_albumId` ON `${TABLE_NAME}` (`albumId`)"
+          },
+          {
+            "name": "index_cloud_assets_isDeleted_capturedAtMillis",
+            "unique": false,
+            "columnNames": [
+              "isDeleted",
+              "capturedAtMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cloud_assets_isDeleted_capturedAtMillis` ON `${TABLE_NAME}` (`isDeleted`, `capturedAtMillis`)"
+          },
+          {
+            "name": "index_cloud_assets_isDownloaded_isDeleted_capturedAtMillis",
+            "unique": false,
+            "columnNames": [
+              "isDownloaded",
+              "isDeleted",
+              "capturedAtMillis"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cloud_assets_isDownloaded_isDeleted_capturedAtMillis` ON `${TABLE_NAME}` (`isDownloaded`, `isDeleted`, `capturedAtMillis`)"
+          }
+        ]
+      },
+      {
+        "tableName": "albums",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`albumId` TEXT NOT NULL, `title` TEXT NOT NULL, `assetCount` INTEGER NOT NULL, `coverAssetId` TEXT, `libraryId` TEXT NOT NULL DEFAULT '', `requiresAuthentication` INTEGER NOT NULL DEFAULT 1, PRIMARY KEY(`albumId`))",
+        "fields": [
+          {
+            "fieldPath": "albumId",
+            "columnName": "albumId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "assetCount",
+            "columnName": "assetCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverAssetId",
+            "columnName": "coverAssetId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "libraryId",
+            "columnName": "libraryId",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "''"
+          },
+          {
+            "fieldPath": "requiresAuthentication",
+            "columnName": "requiresAuthentication",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "1"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "albumId"
+          ]
+        }
+      },
+      {
+        "tableName": "album_memberships",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`albumId` TEXT NOT NULL, `assetId` TEXT NOT NULL, PRIMARY KEY(`albumId`, `assetId`))",
+        "fields": [
+          {
+            "fieldPath": "albumId",
+            "columnName": "albumId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "assetId",
+            "columnName": "assetId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "albumId",
+            "assetId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_album_memberships_assetId",
+            "unique": false,
+            "columnNames": [
+              "assetId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_album_memberships_assetId` ON `${TABLE_NAME}` (`assetId`)"
+          }
+        ]
+      },
+      {
+        "tableName": "sync_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`libraryId` TEXT NOT NULL, `opaqueToken` TEXT, `lastSuccessfulSyncMillis` INTEGER, `fullRefreshRequired` INTEGER NOT NULL, PRIMARY KEY(`libraryId`))",
+        "fields": [
+          {
+            "fieldPath": "libraryId",
+            "columnName": "libraryId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "opaqueToken",
+            "columnName": "opaqueToken",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lastSuccessfulSyncMillis",
+            "columnName": "lastSuccessfulSyncMillis",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "fullRefreshRequired",
+            "columnName": "fullRefreshRequired",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "libraryId"
+          ]
+        }
+      },
+      {
+        "tableName": "download_tasks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`taskId` TEXT NOT NULL, `cloudAssetId` TEXT NOT NULL, `targetUri` TEXT, `status` TEXT NOT NULL, `retryCount` INTEGER NOT NULL, `lastErrorCode` TEXT, `lastErrorMessage` TEXT, PRIMARY KEY(`taskId`))",
+        "fields": [
+          {
+            "fieldPath": "taskId",
+            "columnName": "taskId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cloudAssetId",
+            "columnName": "cloudAssetId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "targetUri",
+            "columnName": "targetUri",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "retryCount",
+            "columnName": "retryCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastErrorCode",
+            "columnName": "lastErrorCode",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lastErrorMessage",
+            "columnName": "lastErrorMessage",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "taskId"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_download_tasks_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_download_tasks_status` ON `${TABLE_NAME}` (`status`)"
+          }
+        ]
+      },
+      {
+        "tableName": "auth_session_metadata",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`sessionId` TEXT NOT NULL, `securityMode` TEXT NOT NULL, `state` TEXT NOT NULL, `expiresAtMillis` INTEGER, PRIMARY KEY(`sessionId`))",
+        "fields": [
+          {
+            "fieldPath": "sessionId",
+            "columnName": "sessionId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "securityMode",
+            "columnName": "securityMode",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiresAtMillis",
+            "columnName": "expiresAtMillis",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "sessionId"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e86b6c1accaa217dac2ff51ea79ba1cc')"
+    ]
+  }
+}
